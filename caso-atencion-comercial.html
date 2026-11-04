@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Caso didáctico de atención comercial: el problema, el desglose del proceso en cinco tareas y la solución final con IA, humano y ERP.">
+  <meta name="theme-color" content="#081d28">
+  <title>Caso 01 · Atención comercial · Operación Caos</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Alfa+Slab+One&family=Anton&family=Archivo+Black&family=Bebas+Neue&family=Bodoni+Moda:opsz,wght@6..96,900&family=Courier+Prime:ital,wght@0,400;0,700&family=Old+Standard+TT:ital,wght@0,400;0,700&family=Playfair+Display:wght@700;900&family=Special+Elite&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/ransom-collage.css">
+  <link rel="stylesheet" href="assets/deck.css">
+  <link rel="stylesheet" href="assets/caso.css">
+  <script src="assets/ransom-global.js" defer></script>
+  <script src="assets/caso.js" defer></script>
+</head>
+
+<body class="rc deck case">
+  <a class="skip-link" href="#problema">Ir al caso</a>
+
+  <header class="case-nav">
+    <a class="case-nav__brand" href="#inicio" aria-label="Volver al inicio del caso">
+      <span class="meta-brand">DAIA <span>·</span> <span class="case-brand-long">DISCOVERY</span></span>
+      <span class="case-nav__tag">CASO 01</span>
+    </a>
+
+    <nav class="case-nav__links" aria-label="Capítulos del caso">
+      <a href="#problema" data-nav>01 · Problema</a>
+      <a href="#desglose" data-nav>02 · Desglose</a>
+      <a href="#solucion" data-nav>03 · Solución</a>
+    </nav>
+
+    <a class="case-nav__back" href="index.html">← Presentación</a>
+    <span class="case-nav__progress" data-progress aria-hidden="true"></span>
+  </header>
+
+  <main id="contenido">
+    <!-- ===================================================================
+         PORTADA
+         =================================================================== -->
+    <section class="case-hero" id="inicio" aria-labelledby="hero-title">
+      <div class="case-hero__bg" aria-hidden="true"></div>
+
+      <div class="rc-container case-hero__inner">
+        <div class="case-hero__copy">
+          <p class="eyebrow">DAIA · DISCOVERY / CASO 01</p>
+
+          <h1 class="case-hero__title" id="hero-title">
+            <span class="rc-text" data-ransom data-seed="caso-atencion-hero" data-tilt="5" data-upper=".55">Atención comercial</span>
+          </h1>
+
+          <p class="case-hero__lead">Una consulta entra por Instagram. La respuesta sale. Pero el sistema <strong>nunca se enteró</strong>.</p>
+          <p class="case-hero__sub">Desarmá el proceso en cinco tareas, decidí qué hace la IA, qué hace el humano y qué pasa cuando algo falla.</p>
+
+          <div class="case-hero__actions">
+            <a class="rc-btn rc-btn--mustard" href="#problema">Empezar por el problema</a>
+            <span class="case-hero__meta">3 actos · 10 min de lectura</span>
+          </div>
+        </div>
+
+        <aside class="case-file" aria-label="Ficha del caso">
+          <span class="case-file__tape" aria-hidden="true"></span>
+          <span class="rc-label">FICHA DEL CASO</span>
+
+          <dl>
+            <div class="case-file__row">
+              <dt>Entrada</dt>
+              <dd>Mensaje por Instagram o WhatsApp.</dd>
+            </div>
+            <div class="case-file__row">
+              <dt>Salida</dt>
+              <dd>Venta registrada en el ERP.</dd>
+            </div>
+            <div class="case-file__row">
+              <dt>Lo que falta</dt>
+              <dd>El proceso real: quién hace qué, en qué sistema y con qué regla.</dd>
+            </div>
+          </dl>
+
+          <p class="case-file__promise">Al final: mapa + 5 tareas + solución.</p>
+          <span class="rc-stamp" aria-hidden="true">CASO 01</span>
+        </aside>
+      </div>
+
+      <a class="case-hero__scroll" href="#problema" aria-label="Bajar al problema">↓</a>
+    </section>
+
+    <!-- ===================================================================
+         01 · EL PROBLEMA
+         =================================================================== -->
+    <section class="case-section case-section--paper" id="problema" aria-labelledby="problema-title">
+      <div class="case-sheet-wrap">
+        <span class="case-sheet__tape" aria-hidden="true"></span>
+        <div class="case-sheet">
+
+        <header class="case-head">
+          <p class="case-kicker">01 / EL PROBLEMA</p>
+          <h2 class="case-title" id="problema-title">
+            <span class="rc-text" data-ransom data-seed="caso-problema" data-tilt="5" data-upper=".55">El problema</span>
+          </h2>
+          <p class="case-lead">El proceso real no está en el sistema. Vive en un audio, un Excel y la cabeza de quien atiende.</p>
+        </header>
+
+        <div class="case-problem">
+          <div class="case-problem__copy">
+            <p>Entra una consulta por Instagram o WhatsApp. Alguien la lee, busca el historial en tres lugares, responde y, cuando la venta cierra, copia los datos al ERP. Si esa persona se toma vacaciones, el proceso se toma vacaciones con ella.</p>
+            <p>El sistema registra el resultado, no el trabajo. Por eso nadie sabe cuánto cuesta atender una consulta, cuántas tareas se hacen dos veces ni en qué punto se pierde el dato.</p>
+
+            <blockquote class="case-quote">
+              «¿Dónde anotás las cosas en tu cuaderno personal porque el sistema de la empresa es muy lento?»
+              <cite>La pregunta que abre el Discovery.</cite>
+            </blockquote>
+
+            <div class="case-rule">
+              <span class="rc-label">REGLA DE ORO</span>
+              <p>No se puede automatizar el caos. Primero se unifica y se mapea; después se automatiza.</p>
+            </div>
+          </div>
+
+          <aside class="chaos-board case-chaos" aria-label="Evidencia del proceso real: audio, Excel, mail y cuaderno personal">
+            <span class="board-label">EVIDENCIA / LO QUE REALMENTE PASA</span>
+            <svg class="board-web" viewBox="0 0 400 400" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M110 88 C150 140, 178 166, 200 200" />
+              <path d="M292 82 C252 140, 224 166, 200 200" />
+              <path d="M120 300 C156 260, 178 232, 200 200" />
+              <path d="M286 306 C252 258, 226 230, 200 200" />
+            </svg>
+
+            <div class="scrap scrap--audio">
+              <strong>AUDIO DE WHATSAPP</strong>
+              <span class="wave"></span>
+              <span>▶ 3:07 · sin resumen</span>
+            </div>
+
+            <div class="scrap scrap--excel">
+              <strong>EXCEL_v7_FINAL(2)</strong>
+              <span class="cells"></span>
+              <span>«la versión buena»</span>
+            </div>
+
+            <div class="scrap scrap--mail">
+              <strong>MAIL SIN ASUNTO</strong>
+              <span>«URGENTE»</span><br>
+              <span class="strike">contexto</span> · <span class="strike">adjunto</span>
+            </div>
+
+            <div class="scrap scrap--notebook">
+              <strong>CUADERNO PERSONAL</strong>
+              <span class="ruled"></span>
+              <span>ahí vive el proceso</span>
+            </div>
+
+            <span class="board-core">¿Dónde vive<br>el proceso?</span>
+          </aside>
+        </div>
+
+        <div class="case-symptoms" aria-label="Síntomas del proceso roto">
+          <article class="case-symptom">
+            <span class="case-symptom__num">01</span>
+            <h3>Datos partidos</h3>
+            <p>Cada herramienta tiene un pedazo de la verdad. Nadie tiene la verdad completa.</p>
+          </article>
+          <article class="case-symptom">
+            <span class="case-symptom__num">02</span>
+            <h3>Trabajo duplicado</h3>
+            <p>La misma consulta se copia a mano dos o tres veces. Nadie lo mide.</p>
+          </article>
+          <article class="case-symptom">
+            <span class="case-symptom__num">03</span>
+            <h3>Decisiones en la cabeza</h3>
+            <p>Si la persona se va, el proceso se va con ella. No hay manual que lo reemplace.</p>
+          </article>
+          <article class="case-symptom">
+            <span class="case-symptom__num">04</span>
+            <h3>Costo invisible</h3>
+            <p>Se paga todos los meses, pero no aparece en ninguna factura.</p>
+          </article>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         02 · EL DESGLOSE
+         =================================================================== -->
+    <section class="case-section case-section--dark" id="desglose" aria-labelledby="desglose-title">
+      <div class="rc-container">
+        <header class="case-head case-head--dark">
+          <p class="case-kicker">02 / EL DESGLOSE EN TAREAS</p>
+          <h2 class="case-title" id="desglose-title">
+            <span class="rc-text" data-ransom data-seed="caso-desglose" data-tilt="5" data-upper=".55">El desglose</span>
+          </h2>
+          <p class="case-lead">El proceso no es un puesto: es una cadena de cinco tareas. Cada una se decide por separado: qué tarea, con qué regla y con qué válvula de escape.</p>
+        </header>
+
+        <div class="case-anatomy">
+          <div class="case-anatomy__item">
+            <span>01 / HOY</span>
+            <strong>Lo que pasa</strong>
+            <p>Qué hace una persona, con qué herramientas y dónde se traba.</p>
+          </div>
+          <div class="case-anatomy__item">
+            <span>02 / DECISIÓN</span>
+            <strong>Quién controla</strong>
+            <p>El casillero de la matriz: acelerar, aumentar, automatizar con condiciones o mantener humano.</p>
+          </div>
+          <div class="case-anatomy__item">
+            <span>03 / DESPUÉS</span>
+            <strong>Qué cambia</strong>
+            <p>Qué hace la IA, qué hace el humano y dónde termina el dato.</p>
+          </div>
+        </div>
+
+        <nav class="case-rail" aria-label="Las cinco tareas del proceso">
+          <a href="#t1" class="tag-auto"><span>01</span><strong>Clasificar</strong><em>Autom. condicional</em></a>
+          <a href="#t2" class="tag-aug"><span>02</span><strong>Contexto</strong><em>Aumentar</em></a>
+          <a href="#t3" class="tag-acc"><span>03</span><strong>Redactar</strong><em>Acelerar</em></a>
+          <a href="#t4" class="tag-human"><span>04</span><strong>Negociar</strong><em>Humano</em></a>
+          <a href="#t5" class="tag-auto"><span>05</span><strong>Registrar</strong><em>Autom. condicional</em></a>
+        </nav>
+
+        <div class="case-tasks">
+          <article class="case-task" id="t1">
+            <div class="case-task__num">01</div>
+            <div class="case-task__body">
+              <header class="case-task__head">
+                <span class="task-tag task-tag--auto">Automatizar con condiciones</span>
+                <h3>Clasificar la entrada</h3>
+              </header>
+              <p class="case-task__intro">El mensaje entra por Instagram o WhatsApp. Hay que decidir si es consulta, reclamo o pedido.</p>
+              <dl class="case-task__grid">
+                <div class="case-task__cell">
+                  <dt>Hoy</dt>
+                  <dd>Una persona lee, interpreta y deriva a mano. La regla vive en su cabeza.</dd>
+                </div>
+                <div class="case-task__cell">
+                  <dt>Decisión</dt>
+                  <dd>La IA clasifica. Confianza &gt; 90%: rutea sola al CRM. Si no, va a una persona.</dd>
+                </div>
+                <div class="case-task__cell">
+                  <dt>Después</dt>
+                  <dd>El mensaje llega etiquetado a la bandeja correcta. El caso raro conserva su válvula de escape.</dd>
+                </div>
+              </dl>
+            </div>
+          </article>
+
+          <article class="case-task" id="t2">
+            <div class="case-task__num">02</div>
+            <div class="case-task__body">
+              <header class="case-task__head">
+                <span class="task-tag task-tag--aug">Aumentar</span>
+                <h3>Buscar contexto</h3>
+              </header>
+              <p class="case-task__intro">Antes de responder, hay que reconstruir quién es el cliente y qué pasó antes.</p>
+              <dl class="case-task__grid">
+                <div class="case-task__cell">
+                  <dt>Hoy</dt>
+                  <dd>Abrir WhatsApp, el CRM y el Excel. Cinco minutos por consulta, a veces más.</dd>
+                </div>
+                <div class="case-task__cell">
+                  <dt>Decisión</dt>
+                  <dd>Un agente busca historial, compras y conversaciones previas en paralelo. No decide: muestra.</dd>
+                </div>
+                <div class="case-task__cell">
+                  <dt>Después</dt>
+                  <dd>El humano ve el contexto en una sola pantalla y decide con información completa.</dd>
+                </div>
+              </dl>
+            </div>
+          </article>
+
+          <article class="case-task" id="t3">
+            <div class="case-task__num">03</div>
+            <div class="case-task__body">
+              <header class="case-task__head">
+                <span class="task-tag task-tag--acc">Acelerar</span>
+                <h3>Redactar la respuesta</h3>
+              </header>
+              <p class="case-task__intro">La respuesta tiene que sonar a la empresa y hablar del caso concreto.</p>
+              <dl class="case-task__grid">
+                <div class="case-task__cell">
+                  <dt>Hoy</dt>
+                  <dd>Escribir desde cero, con el tono de cada cliente y datos dispersos.</dd>
+                </div>
+                <div class="case-task__cell">
+                  <dt>Decisión</dt>
+                  <dd>La IA arma un borrador con tono y datos. El humano revisa, ajusta y envía.</dd>
+                </div>
+                <div class="case-task__cell">
+                  <dt>Después</dt>
+                  <dd>Menos tiempo en la primera respuesta. La voz y el criterio siguen siendo humanos.</dd>
+                </div>
+              </dl>
+            </div>
+          </article>
+
+          <article class="case-task" id="t4">
+            <div class="case-task__num">04</div>
+            <div class="case-task__body">
+              <header class="case-task__head">
+                <span class="task-tag task-tag--human">Mantener humano</span>
+                <h3>Negociar el cierre</h3>
+              </header>
+              <p class="case-task__intro">Precio, excepciones, descuentos y empatía. Cada caso es distinto.</p>
+              <dl class="case-task__grid">
+                <div class="case-task__cell">
+                  <dt>Hoy</dt>
+                  <dd>La decisión depende de una persona que conoce el negocio y la relación.</dd>
+                </div>
+                <div class="case-task__cell">
+                  <dt>Decisión</dt>
+                  <dd>No se delega. Dinero + criterio + relación.</dd>
+                </div>
+                <div class="case-task__cell">
+                  <dt>Después</dt>
+                  <dd>La IA puede preparar contexto y borrador, pero la decisión final es humana.</dd>
+                </div>
+              </dl>
+            </div>
+          </article>
+
+          <article class="case-task" id="t5">
+            <div class="case-task__num">05</div>
+            <div class="case-task__body">
+              <header class="case-task__head">
+                <span class="task-tag task-tag--auto">Automatizar con condiciones</span>
+                <h3>Registrar la venta</h3>
+              </header>
+              <p class="case-task__intro">La venta existe cuando queda registrada en el ERP, no cuando se dice por WhatsApp.</p>
+              <dl class="case-task__grid">
+                <div class="case-task__cell">
+                  <dt>Hoy</dt>
+                  <dd>Copiar y pegar datos al ERP. Si falta un campo, se completa de memoria o se pierde.</dd>
+                </div>
+                <div class="case-task__cell">
+                  <dt>Decisión</dt>
+                  <dd>Validar los datos y pasarlos por API. Si el dato falla, vuelve a un humano.</dd>
+                </div>
+                <div class="case-task__cell">
+                  <dt>Después</dt>
+                  <dd>La venta queda registrada una sola vez, trazable y sin doble carga.</dd>
+                </div>
+              </dl>
+            </div>
+          </article>
+        </div>
+
+        <div class="case-summary" aria-label="Resumen de decisiones por tarea">
+          <div>
+            <span>Acelerar</span>
+            <strong>03 · Redactar</strong>
+          </div>
+          <div>
+            <span>Aumentar</span>
+            <strong>02 · Contexto</strong>
+          </div>
+          <div>
+            <span>Automatizar con condiciones</span>
+            <strong>01 · Clasificar + 05 · Registrar</strong>
+          </div>
+          <div>
+            <span>Mantener humano</span>
+            <strong>04 · Negociar</strong>
+          </div>
+        </div>
+
+        <div class="case-takeaway">
+          <span class="rc-label">LO IMPORTANTE</span>
+          <p>La misma persona sigue siendo dueña del proceso. Lo que cambia es el reparto del trabajo.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         03 · LA SOLUCIÓN
+         =================================================================== -->
+    <section class="case-section case-section--paper" id="solucion" aria-labelledby="solucion-title">
+      <div class="case-sheet-wrap">
+        <span class="case-sheet__tape" aria-hidden="true"></span>
+        <div class="case-sheet case-sheet--solution">
+
+        <header class="case-head">
+          <p class="case-kicker">03 / LA SOLUCIÓN FINAL</p>
+          <h2 class="case-title" id="solucion-title">
+            <span class="rc-text" data-ransom data-seed="caso-solucion" data-tilt="5" data-upper=".55">La solución</span>
+          </h2>
+          <p class="case-lead">No es un chatbot que reemplaza al comercial. Es un sistema que reparte el trabajo entre IA, humano y ERP.</p>
+        </header>
+
+        <div class="case-flow" aria-label="Flujo final: entra el mensaje, la IA clasifica y busca contexto, redacta un borrador, el humano negocia y el sistema registra la venta">
+          <div class="case-flow__step flow-system">
+            <small>Sistema</small>
+            <strong>Entra</strong>
+            <span>Instagram / WhatsApp.</span>
+          </div>
+          <span class="case-flow__arrow" aria-hidden="true">→</span>
+          <div class="case-flow__step flow-ai">
+            <small>IA</small>
+            <strong>Clasifica</strong>
+            <span>Regla + umbral 90%.</span>
+          </div>
+          <span class="case-flow__arrow" aria-hidden="true">→</span>
+          <div class="case-flow__step flow-ai">
+            <small>IA</small>
+            <strong>Contexto</strong>
+            <span>Agente en paralelo.</span>
+          </div>
+          <span class="case-flow__arrow" aria-hidden="true">→</span>
+          <div class="case-flow__step flow-ai">
+            <small>IA</small>
+            <strong>Redacta</strong>
+            <span>Borrador con tono.</span>
+          </div>
+          <span class="case-flow__arrow" aria-hidden="true">→</span>
+          <div class="case-flow__step flow-human">
+            <small>Humano</small>
+            <strong>Negocia</strong>
+            <span>Precio y excepciones.</span>
+          </div>
+          <span class="case-flow__arrow" aria-hidden="true">→</span>
+          <div class="case-flow__step flow-system">
+            <small>Sistema</small>
+            <strong>Registra</strong>
+            <span>API → ERP.</span>
+          </div>
+        </div>
+
+        <div class="case-valve">
+          <span class="rc-label">VÁLVULA DE ESCAPE</span>
+          <p>Si la confianza baja del 90% o el dato falla, el caso vuelve a una persona. La automatización no es una apuesta: es un circuito con freno.</p>
+        </div>
+
+        <div class="case-roles">
+          <article class="case-role case-role--ai">
+            <span class="rc-label">IA</span>
+            <h3>Prepara</h3>
+            <ul>
+              <li>Clasifica la entrada.</li>
+              <li>Busca contexto en paralelo.</li>
+              <li>Redacta borradores.</li>
+              <li>Valida datos antes de pasarlos.</li>
+            </ul>
+          </article>
+
+          <article class="case-role case-role--human">
+            <span class="rc-label">HUMANO</span>
+            <h3>Decide</h3>
+            <ul>
+              <li>Negocia el cierre.</li>
+              <li>Resuelve excepciones.</li>
+              <li>Aprueba el envío.</li>
+              <li>Cuida la relación.</li>
+            </ul>
+          </article>
+
+          <article class="case-role case-role--system">
+            <span class="rc-label">SISTEMA</span>
+            <h3>Registra</h3>
+            <ul>
+              <li>Mueve el dato entre herramientas.</li>
+              <li>Registra la venta en el ERP.</li>
+              <li>Deja trazabilidad.</li>
+              <li>Dispara alertas cuando falta algo.</li>
+            </ul>
+          </article>
+        </div>
+
+        <section class="case-roi" aria-labelledby="roi-title">
+          <div class="case-roi__head">
+            <span class="rc-label">LA CUENTA DEL ANTES</span>
+            <h3 id="roi-title">¿Cuánto cuesta hacerlo a mano?</h3>
+            <p>La línea de base es el único argumento válido para demostrar el ROI. Mové los controles y mirá la cuenta.</p>
+          </div>
+
+          <div class="case-roi__grid">
+            <div class="case-roi__controls">
+              <label class="case-control" for="roi-min">
+                <span>Minutos por tarea <output for="roi-min" data-out="min">12</output></span>
+                <input id="roi-min" data-roi="min" type="range" min="1" max="120" step="1" value="12">
+              </label>
+
+              <label class="case-control" for="roi-freq">
+                <span>Consultas por mes <output for="roi-freq" data-out="freq">240</output></span>
+                <input id="roi-freq" data-roi="freq" type="range" min="10" max="1000" step="10" value="240">
+              </label>
+
+              <label class="case-control" for="roi-cost">
+                <span>Costo por hora <output for="roi-cost" data-out="cost">$18</output></span>
+                <input id="roi-cost" data-roi="cost" type="range" min="5" max="100" step="1" value="18">
+              </label>
+
+              <label class="case-control" for="roi-auto">
+                <span>Tiempo automatizable <output for="roi-auto" data-out="auto">60%</output></span>
+                <input id="roi-auto" data-roi="auto" type="range" min="0" max="100" step="5" value="60">
+              </label>
+
+              <button class="case-roi__reset" type="button" data-roi-reset>Volver al ejemplo</button>
+            </div>
+
+            <div class="case-roi__result" aria-live="polite" aria-atomic="true">
+              <span class="rc-label">AHORRO ESTIMADO</span>
+              <p class="case-roi__big"><span>$</span><strong data-roi-out="save">518</strong><small>/ mes</small></p>
+              <p class="case-roi__formula" data-roi-out="formula">12 min × 240 consultas × $18/h = $864/mes</p>
+
+              <dl class="case-roi__list">
+                <div><dt>Costo invisible hoy</dt><dd data-roi-out="invisible">$864 / mes</dd></div>
+                <div><dt>Horas liberadas</dt><dd data-roi-out="hours">28,8 h / mes</dd></div>
+                <div><dt>Ahorro anual</dt><dd data-roi-out="year">$6.221 / año</dd></div>
+                <div><dt>Costo que queda</dt><dd data-roi-out="remaining">$346 / mes</dd></div>
+              </dl>
+
+              <p class="case-roi__note">Escenario ilustrativo. Los números reales salen del cliente, no del PowerPoint.</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="case-principles">
+          <article>
+            <span>01</span>
+            <h3>Proceso antes que herramienta.</h3>
+            <p>La herramienta sale del mapa, no al revés.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Tarea antes que puesto.</h3>
+            <p>No automatizás al comercial: automatizás redactar el presupuesto.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Números del cliente antes que promesas.</h3>
+            <p>Sin línea de base no hay ROI, solo opiniones.</p>
+          </article>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         CIERRE
+         =================================================================== -->
+    <section class="case-end" aria-labelledby="cierre-title">
+      <div class="rc-container case-end__grid">
+        <div class="case-end__copy">
+          <p class="case-kicker">CIERRE</p>
+          <h2 class="case-end__title" id="cierre-title">
+            <span class="rc-text" data-ransom data-seed="caso-cierre-a" data-tilt="6" data-upper=".55">El caos primero.</span>
+            <span class="rc-text" data-ransom data-seed="caso-cierre-b" data-tilt="6" data-upper=".55">El código después.</span>
+          </h2>
+          <p class="case-end__sub">La automatización que funciona empieza en el campo, no en el editor.</p>
+
+          <div class="case-end__actions">
+            <a class="rc-btn rc-btn--mustard" href="index.html">Volver a la presentación</a>
+            <a class="case-end__link" href="GUION.md">Abrir el guion ↗</a>
+          </div>
+        </div>
+
+        <aside class="case-checklist" aria-label="Checklist para la próxima entrevista">
+          <span class="rc-label">PARA LA PRÓXIMA ENTREVISTA</span>
+          <ol>
+            <li>¿Dónde vive el proceso hoy?</li>
+            <li>¿Quién copia y pega?</li>
+            <li>¿Cuánto cuesta hacerlo a mano?</li>
+          </ol>
+          <span class="rc-stamp" aria-hidden="true">CAMPO</span>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="case-foot">
+    <span>DAIA · DISCOVERY</span>
+    <span>CASO 01 · ATENCIÓN COMERCIAL</span>
+    <span>TRAMO 1 · 2026</span>
+  </footer>
+</body>
+</html>

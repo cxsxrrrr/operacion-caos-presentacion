@@ -1,0 +1,553 @@
+/* ==========================================================================
+   RANSOM COLLAGE CSS  ·  v1.0
+   Sistema de diseño "letras de revista recortadas y pegadas".
+   CSS puro, sin dependencias. Prefijo único: rc-
+   Orden: 1 tokens · 2 base/papel · 3 letra recortada · 4 layout
+          5 componentes · 6 decoración · 7 temas · 8 movimiento reducido
+   ========================================================================== */
+
+/* Fuentes: cargarlas en <head> (ver references/frameworks.md). Pesos usados:
+   Abril Fatface, Anton, Alfa Slab One, Archivo Black, Bodoni Moda 900,
+   Playfair Display 900, Old Standard TT 400/700, Special Elite, Bebas Neue,
+   Courier Prime 400/700 */
+
+/* ---------- 1. TOKENS ---------------------------------------------------- */
+:root {
+  /* Papeles */
+  --rc-paper:     #eadfc6;   /* fondo principal: papel envejecido */
+  --rc-newsprint: #f4ecd8;   /* superficies: papel de periódico claro */
+  --rc-white:     #fbf8f0;   /* recortes blancos / bordes de die-cut */
+  --rc-kraft:     #cbb28a;   /* cartón, cinta, zonas secundarias */
+
+  /* Tintas */
+  --rc-ink:       #15110f;   /* negro de imprenta (nunca #000) */
+  --rc-ink-soft:  #3a322c;   /* texto secundario */
+
+  /* Colores de recorte (sacados de revistas de los 60-80) */
+  --rc-red:       #d8332a;
+  --rc-blue:      #1f4fa3;
+  --rc-teal:      #1f8a83;
+  --rc-mustard:   #f2b632;
+  --rc-orange:    #e8742a;
+  --rc-pink:      #d93a79;
+  --rc-green:     #2e7d4f;
+  --rc-maroon:    #6e2a1f;
+  --rc-navy:      #14284b;
+
+  /* Roles semánticos: usar SIEMPRE estos en componentes de interfaz */
+  --rc-bg:        var(--rc-paper);
+  --rc-surface:   var(--rc-newsprint);
+  --rc-text:      var(--rc-ink);
+  --rc-muted:     var(--rc-ink-soft);
+  --rc-accent:    var(--rc-red);       /* acción principal */
+  --rc-accent-2:  var(--rc-blue);      /* acción secundaria / enlaces */
+  --rc-highlight: var(--rc-mustard);   /* marcador, hover, cinta */
+
+  /* Tipografías de recorte (cada una = una revista distinta) */
+  --rc-f-1: 'Abril Fatface', 'Didot', Georgia, serif;
+  --rc-f-2: 'Anton', 'Impact', sans-serif;
+  --rc-f-3: 'Alfa Slab One', Georgia, serif;
+  --rc-f-4: 'Archivo Black', 'Arial Black', sans-serif;
+  --rc-f-5: 'Bodoni Moda', 'Didot', Georgia, serif;
+  --rc-f-6: 'Playfair Display', Georgia, serif;
+  --rc-f-7: 'Old Standard TT', Georgia, serif;
+  --rc-f-8: 'Special Elite', 'Courier New', monospace;
+  --rc-f-9: 'Bebas Neue', 'Impact', sans-serif;
+  /* Tipografías de lectura */
+  --rc-f-body:  'Old Standard TT', 'Georgia', serif;
+  --rc-f-label: 'Special Elite', 'Courier Prime', 'Courier New', monospace;
+  --rc-f-mono:  'Courier Prime', 'Courier New', monospace;
+
+  /* Formas de corte (clip-path irregular, simulan tijera) */
+  --rc-cut-0: polygon(1% 3%, 98% 0, 100% 96%, 3% 100%);
+  --rc-cut-1: polygon(0 4%, 96% 0, 100% 92%, 5% 100%);
+  --rc-cut-2: polygon(3% 0, 100% 5%, 97% 100%, 0 94%);
+  --rc-cut-3: polygon(0 0, 94% 4%, 100% 100%, 4% 96%);
+  --rc-cut-4: polygon(2% 6%, 55% 0, 100% 3%, 98% 100%, 45% 94%, 0 100%);
+
+  /* Sombra "papel pegado": dura + difusa */
+  --rc-lift-sm: 1px 2px 0 rgba(30, 18, 8, .18), 2px 4px 6px -2px rgba(30, 18, 8, .35);
+  --rc-lift:    1px 2px 0 rgba(30, 18, 8, .14), 4px 8px 16px -6px rgba(30, 18, 8, .5);
+  --rc-lift-hi: 2px 4px 0 rgba(30, 18, 8, .12), 10px 18px 26px -10px rgba(30, 18, 8, .55);
+
+  /* Grano de papel (ruido SVG inline, sin peticiones de red) */
+  --rc-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .25 0 0 0 0 .18 0 0 0 0 .1 0 0 0 .9 -.28'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  /* Espaciado y ritmo */
+  --rc-gap: clamp(1.25rem, 3vw, 2.5rem);
+  --rc-pad-x: clamp(1.25rem, 5vw, 4rem);
+  --rc-max: 76rem;
+  --rc-ease-pop: cubic-bezier(.3, 1.7, .5, 1);   /* rebote "se pega" */
+}
+
+/* ---------- 2. BASE / PAPEL --------------------------------------------- */
+.rc, .rc *, .rc *::before, .rc *::after { box-sizing: border-box; }
+
+.rc {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--rc-text);
+  font-family: var(--rc-f-body);
+  font-size: clamp(1.05rem, .98rem + .3vw, 1.2rem);
+  line-height: 1.6;
+  background-color: var(--rc-bg);
+  background-image:
+    var(--rc-grain),
+    radial-gradient(120% 80% at 18% 0%, rgba(255, 255, 255, .38), transparent 60%),
+    radial-gradient(90% 90% at 100% 100%, rgba(120, 80, 30, .2), transparent 58%),
+    radial-gradient(40% 30% at 70% 40%, rgba(150, 100, 40, .08), transparent 70%);
+  background-attachment: fixed, scroll, scroll, scroll;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.rc ::selection { background: var(--rc-mustard); color: var(--rc-ink); }
+
+.rc a:where(:not([class])) { color: var(--rc-accent-2); text-decoration-thickness: .12em; text-underline-offset: .18em; }
+.rc a:where(:not([class])):hover { background: var(--rc-highlight); color: var(--rc-ink); }
+
+.rc :focus-visible { outline: 3px dashed var(--rc-accent); outline-offset: 3px; }
+
+.rc img { max-width: 100%; display: block; }
+/* Cinta, tiras rotadas y collages sobresalen: recortar sin crear scroll horizontal */
+.rc main { overflow-x: clip; }
+
+.rc p { margin: 0 0 1em; max-width: 62ch; }
+
+/* Títulos de interfaz sencillos (cuando NO se usa letra recortada) */
+.rc h1, .rc h2, .rc h3 { margin: 0; line-height: 1.05; }
+.rc-title {
+  font-family: var(--rc-f-1);
+  font-size: clamp(2rem, 1.4rem + 3vw, 3.6rem);
+  letter-spacing: -.01em;
+}
+
+.rc-sr { /* solo lectores de pantalla */
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- 3. LETRA RECORTADA (el átomo del sistema) -------------------- */
+/* Estructura:  .rc-text > .rc-word > .rc-l   (el helper JS/React la genera)
+   Cada .rc-l lee sus variables. Si no hay JS, las reglas :nth-child de abajo
+   dan variedad automática. Los estilos inline del helper tienen prioridad. */
+
+.rc-text {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .12em .5em;
+  font-size: var(--rc-text-size, clamp(2.4rem, 1rem + 7vw, 6.5rem));
+  line-height: 1.1;
+  margin: 0;
+  /* La sombra va en el contenedor: clip-path de cada letra recortaría la suya */
+  filter: drop-shadow(1px 2px 0 rgba(30, 18, 8, .3)) drop-shadow(3px 7px 7px rgba(30, 18, 8, .22));
+}
+.rc-text--sm { --rc-text-size: clamp(1.3rem, 1rem + 1.4vw, 2rem); }
+.rc-text--md { --rc-text-size: clamp(1.8rem, 1.1rem + 3vw, 3.4rem); }
+.rc-text--xl { --rc-text-size: clamp(3rem, 1rem + 10vw, 9rem); }
+.rc-text--center { justify-content: center; }
+
+.rc-word { display: inline-flex; align-items: center; white-space: nowrap; }
+
+.rc-l {
+  --bg: var(--rc-paper);
+  --fg: var(--rc-ink);
+  --ff: var(--rc-f-1);
+  --fa: 1;                 /* ajuste óptico por fuente */
+  --rot: 0deg;
+  --dy: 0em;
+  --sc: 1;
+  --cut: var(--rc-cut-0);
+
+  position: relative;
+  display: inline-block;
+  margin-inline: .012em;
+  padding: .07em .15em .03em;
+  font-family: var(--ff);
+  font-size: calc(1em * var(--sc) * var(--fa));
+  font-weight: 400;
+  line-height: 1;
+  color: var(--fg);
+  background-color: var(--bg);
+  clip-path: var(--cut);
+  transform: translateY(var(--dy)) rotate(calc(var(--rot) * var(--rk, 1)));
+  transition: transform .4s var(--rc-ease-pop);
+}
+/* Grano de papel impreso sobre cada recorte */
+.rc-l::after {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: var(--rc-grain);
+  mix-blend-mode: multiply;
+  opacity: .55;
+  pointer-events: none;
+}
+
+/* Variante A: tramado de impresión (puntos de semitono) */
+.rc-l--dots {
+  background-image: radial-gradient(rgba(0, 0, 0, .2) 1px, transparent 1.5px);
+  background-size: 4px 4px;
+}
+/* Variante B: recortado "a la silueta" — solo la letra con borde blanco */
+.rc-l--die {
+  --cut: none;
+  background: transparent !important;
+  color: var(--die, var(--rc-red));
+  padding: .02em .06em;
+  -webkit-text-stroke: .16em var(--rc-white);
+  paint-order: stroke fill;
+  text-shadow: 1px 2px 0 rgba(30, 18, 8, .28);
+}
+.rc-l--die::after { display: none; }
+
+/* Interacción: al pasar el ratón las letras "se reacomodan" */
+.rc-text--live:hover .rc-l {
+  transform: translateY(calc(var(--dy) * -1.5)) rotate(calc(var(--rot) * -1.7));
+}
+
+/* --- Fallback sin JS: variedad por posición. Ciclos coprimos (11,9,7,5,4,3)
+       para que el patrón no se note repetido. --- */
+.rc-l:nth-child(11n+1)  { --bg: var(--rc-paper);   --fg: var(--rc-ink); }
+.rc-l:nth-child(11n+2)  { --bg: var(--rc-red);     --fg: var(--rc-paper); }
+.rc-l:nth-child(11n+3)  { --bg: var(--rc-blue);    --fg: var(--rc-white); }
+.rc-l:nth-child(11n+4)  { --bg: var(--rc-ink);     --fg: var(--rc-mustard); }
+.rc-l:nth-child(11n+5)  { --bg: var(--rc-mustard); --fg: var(--rc-ink); }
+.rc-l:nth-child(11n+6)  { --bg: var(--rc-teal);    --fg: var(--rc-paper); }
+.rc-l:nth-child(11n+7)  { --bg: var(--rc-white);   --fg: var(--rc-red); }
+.rc-l:nth-child(11n+8)  { --bg: var(--rc-pink);    --fg: var(--rc-white); }
+.rc-l:nth-child(11n+9)  { --bg: var(--rc-orange);  --fg: var(--rc-ink); }
+.rc-l:nth-child(11n+10) { --bg: var(--rc-paper);   --fg: var(--rc-blue); }
+.rc-l:nth-child(11n+11) { --bg: var(--rc-navy);    --fg: var(--rc-paper); }
+
+.rc-l:nth-child(9n+1) { --ff: var(--rc-f-1); }
+.rc-l:nth-child(9n+2) { --ff: var(--rc-f-2); --fa: .95; }
+.rc-l:nth-child(9n+3) { --ff: var(--rc-f-3); }
+.rc-l:nth-child(9n+4) { --ff: var(--rc-f-4); --fa: .92; }
+.rc-l:nth-child(9n+5) { --ff: var(--rc-f-5); font-weight: 900; }
+.rc-l:nth-child(9n+6) { --ff: var(--rc-f-6); font-weight: 900; }
+.rc-l:nth-child(9n+7) { --ff: var(--rc-f-7); font-weight: 700; }
+.rc-l:nth-child(9n+8) { --ff: var(--rc-f-8); --fa: .85; }
+.rc-l:nth-child(9n+9) { --ff: var(--rc-f-9); --fa: 1.12; }
+
+.rc-l:nth-child(7n+1) { --rot: -6deg; }
+.rc-l:nth-child(7n+2) { --rot: 4deg; }
+.rc-l:nth-child(7n+3) { --rot: -2deg; }
+.rc-l:nth-child(7n+4) { --rot: 7deg; }
+.rc-l:nth-child(7n+5) { --rot: -4deg; }
+.rc-l:nth-child(7n+6) { --rot: 2deg; }
+.rc-l:nth-child(7n+7) { --rot: 5deg; }
+
+.rc-l:nth-child(5n+1) { --cut: var(--rc-cut-0); }
+.rc-l:nth-child(5n+2) { --cut: var(--rc-cut-1); }
+.rc-l:nth-child(5n+3) { --cut: var(--rc-cut-2); }
+.rc-l:nth-child(5n+4) { --cut: var(--rc-cut-3); }
+.rc-l:nth-child(5n+5) { --cut: var(--rc-cut-4); }
+
+.rc-l:nth-child(4n+1) { --sc: 1; }
+.rc-l:nth-child(4n+2) { --sc: .9; }
+.rc-l:nth-child(4n+3) { --sc: 1.12; }
+.rc-l:nth-child(4n+4) { --sc: .96; }
+
+.rc-l:nth-child(3n+1) { --dy: 0em; }
+.rc-l:nth-child(3n+2) { --dy: .06em; }
+.rc-l:nth-child(3n+3) { --dy: -.05em; }
+
+/* ---------- 4. LAYOUT ---------------------------------------------------- */
+.rc-container { width: min(100% - 2 * var(--rc-pad-x), var(--rc-max)); margin-inline: auto; }
+.rc-section { padding-block: clamp(3rem, 8vw, 7rem); position: relative; }
+.rc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: calc(var(--rc-gap) * 1.2) var(--rc-gap);
+  padding-top: .8rem; /* aire para la cinta de las tarjetas */
+}
+.rc-split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: var(--rc-gap);
+  align-items: center;
+}
+.rc-stack > * + * { margin-top: var(--rc-stack, 1.25rem); }
+
+/* ---------- 5. COMPONENTES ---------------------------------------------- */
+
+/* 5.1 Navegación: tira de papel con enlaces como recortes sueltos */
+.rc-nav {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+  gap: .75rem 1.5rem;
+  padding: .75rem var(--rc-pad-x);
+  background: color-mix(in srgb, var(--rc-newsprint) 92%, transparent);
+  backdrop-filter: blur(3px);
+  box-shadow: 0 3px 0 var(--rc-ink), 0 8px 14px -8px rgba(30, 18, 8, .5);
+}
+.rc-nav__links { display: flex; flex-wrap: wrap; gap: .6rem; list-style: none; margin: 0; padding: 0; }
+.rc-nav__links a {
+  display: inline-block;
+  padding: .25em .7em;
+  font-family: var(--rc-f-label);
+  font-size: .95rem; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--rc-ink); text-decoration: none;
+  background: var(--rc-white);
+  box-shadow: var(--rc-lift-sm);
+  transform: rotate(-2deg);
+  transition: transform .3s var(--rc-ease-pop), background .2s;
+}
+.rc-nav__links li:nth-child(even) a { transform: rotate(1.6deg); background: var(--rc-paper); }
+.rc-nav__links li:nth-child(3n) a   { transform: rotate(-.8deg) translateY(1px); }
+.rc-nav__links a:hover, .rc-nav__links a[aria-current="page"] {
+  transform: rotate(0) translateY(-2px) scale(1.06);
+  background: var(--rc-highlight); color: var(--rc-ink);
+}
+.rc-logo { text-decoration: none; display: inline-block; }
+.rc-logo:hover { background: none; }
+.rc-logo .rc-text { --rc-text-size: 1.7rem; gap: 0 .3em; filter: drop-shadow(1px 1px 0 rgba(30, 18, 8, .35)); }
+
+/* 5.2 Botones: pieza de papel pegada */
+.rc-btn {
+  --btn-bg: var(--rc-ink); --btn-fg: var(--rc-mustard);
+  display: inline-block;
+  padding: .7em 1.4em .6em;
+  border: 0;
+  font-family: var(--rc-f-2);
+  font-size: 1.25rem; letter-spacing: .09em; text-transform: uppercase; line-height: 1.1;
+  color: var(--btn-fg); background: var(--btn-bg);
+  border-radius: 2px 6px 3px 7px / 5px 2px 6px 3px;
+  box-shadow: 4px 5px 0 rgba(30, 18, 8, .85);
+  transform: rotate(-1.5deg);
+  text-decoration: none; cursor: pointer;
+  transition: transform .25s var(--rc-ease-pop), box-shadow .2s;
+}
+.rc-btn:hover { transform: rotate(0) translate(-2px, -3px); box-shadow: 7px 9px 0 rgba(30, 18, 8, .85); background: var(--btn-bg); color: var(--btn-fg); }
+.rc-btn:active { transform: rotate(0) translate(3px, 4px); box-shadow: 1px 1px 0 rgba(30, 18, 8, .85); }
+.rc-btn--red     { --btn-bg: var(--rc-red);     --btn-fg: var(--rc-paper); }
+.rc-btn--blue    { --btn-bg: var(--rc-blue);    --btn-fg: var(--rc-white); }
+.rc-btn--mustard { --btn-bg: var(--rc-mustard); --btn-fg: var(--rc-ink); }
+.rc-btn--paper   { --btn-bg: var(--rc-white);   --btn-fg: var(--rc-ink); box-shadow: 4px 5px 0 var(--rc-ink); }
+.rc-btn:nth-of-type(even) { transform: rotate(1.2deg); }
+.rc-btn:nth-of-type(even):hover { transform: rotate(0) translate(-2px, -3px); }
+
+/* 5.3 Tarjeta: papel pegado con cinta */
+.rc-card {
+  --rot: -1.2deg; --tape: rgba(242, 182, 50, .6);
+  position: relative;
+  padding: 1.6rem 1.5rem 1.7rem;
+  background: var(--rc-surface);
+  box-shadow: var(--rc-lift);
+  transform: rotate(var(--rot));
+  transition: transform .3s var(--rc-ease-pop), box-shadow .3s;
+}
+.rc-card::before { /* cinta adhesiva translúcida con bordes dentados */
+  content: "";
+  position: absolute; top: -.95rem; left: 50%;
+  width: 6.2rem; height: 1.9rem;
+  background: var(--tape);
+  transform: translateX(-50%) rotate(-3deg);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+  clip-path: polygon(0 0, 3% 20%, 0 40%, 3% 60%, 0 80%, 3% 100%, 100% 100%, 97% 80%, 100% 60%, 97% 40%, 100% 20%, 97% 0);
+}
+.rc-card:hover { transform: rotate(0) translateY(-6px); box-shadow: var(--rc-lift-hi); }
+.rc-grid > .rc-card:nth-child(3n+2) { --rot: 1.4deg;  --tape: rgba(31, 138, 131, .5); }
+.rc-grid > .rc-card:nth-child(3n+3) { --rot: -.6deg;  --tape: rgba(217, 58, 121, .45); }
+.rc-grid > .rc-card:nth-child(4n)   { --rot: 1deg; }
+.rc-card h3 { font-family: var(--rc-f-1); font-size: 1.9rem; margin-bottom: .5rem; }
+.rc-card--dark { background: var(--rc-ink); color: var(--rc-paper); --tape: rgba(251, 248, 240, .45); }
+.rc-card--red  { background: var(--rc-red);  color: var(--rc-paper); --tape: rgba(251, 248, 240, .45); }
+.rc-card--blue { background: var(--rc-blue); color: var(--rc-white); --tape: rgba(242, 182, 50, .6); }
+
+/* 5.4 Foto/pieza de imagen estilo polaroid recortada */
+.rc-photo {
+  position: relative; margin: 0;
+  padding: .6rem .6rem 2.2rem;
+  background: var(--rc-white);
+  box-shadow: var(--rc-lift);
+  transform: rotate(2deg);
+}
+.rc-photo img, .rc-photo__ph {
+  width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+  filter: contrast(1.1) saturate(.85) sepia(.2);       /* look impreso */
+}
+.rc-photo__ph { /* placeholder de semitono */
+  background:
+    radial-gradient(rgba(21, 17, 15, .55) 1.2px, transparent 1.7px) 0 0 / 6px 6px,
+    linear-gradient(135deg, var(--rc-mustard), var(--rc-orange) 55%, var(--rc-red));
+}
+.rc-photo figcaption { position: absolute; left: .8rem; right: .8rem; bottom: .5rem; font-family: var(--rc-f-label); font-size: .85rem; letter-spacing: .06em; }
+
+/* 5.5 Etiqueta de máquina (tipo Dymo) */
+.rc-label {
+  display: inline-block;
+  padding: .2em .7em;
+  font-family: var(--rc-f-label);
+  font-size: .9rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--rc-white); background: var(--rc-ink);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, .8), 0 1px 0 rgba(255, 255, 255, .25);
+  border-radius: 2px;
+  transform: rotate(-2deg);
+  box-shadow: var(--rc-lift-sm);
+}
+.rc-label--red { background: var(--rc-red); }
+.rc-label--blue { background: var(--rc-blue); }
+
+/* 5.6 Tira de texto mecanografiado (subtítulos, citas, metadatos) */
+.rc-slip {
+  display: inline-block;
+  padding: .45em .9em;
+  font-family: var(--rc-f-label);
+  font-size: clamp(1rem, .9rem + .5vw, 1.3rem);
+  background: var(--rc-white);
+  box-shadow: var(--rc-lift-sm);
+  transform: rotate(-1deg);
+  max-width: 100%;
+}
+.rc-slip mark { background: var(--rc-highlight); padding: 0 .2em; }
+
+/* 5.7 Subrayado de rotulador (para resaltar palabras en texto normal) */
+.rc-marker {
+  background: linear-gradient(104deg, transparent .4em, color-mix(in srgb, var(--rc-highlight) 85%, transparent) .6em 94%, transparent 98%);
+  padding: 0 .3em; margin: 0 -.15em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+
+/* 5.8 Formularios: ficha mecanografiada */
+.rc-form { display: grid; gap: 1.4rem; }
+.rc-field { display: grid; gap: .45rem; }
+.rc-field > label { justify-self: start; }  /* usar con class="rc-label" */
+.rc-input, .rc-textarea, .rc-select {
+  width: 100%;
+  padding: .75em .9em;
+  font-family: var(--rc-f-mono); font-size: 1.1rem; color: var(--rc-ink);
+  background: var(--rc-white);
+  border: 2px solid var(--rc-ink);
+  border-radius: 2px 5px 3px 6px / 4px 2px 5px 3px;
+  box-shadow: 4px 5px 0 var(--rc-ink);
+  transition: transform .2s var(--rc-ease-pop), box-shadow .2s;
+}
+.rc-input::placeholder, .rc-textarea::placeholder { color: color-mix(in srgb, var(--rc-ink) 45%, transparent); font-style: italic; }
+.rc-input:focus, .rc-textarea:focus, .rc-select:focus {
+  outline: 3px dashed var(--rc-accent); outline-offset: 4px;
+  transform: translate(-2px, -2px); box-shadow: 7px 8px 0 var(--rc-ink);
+}
+.rc-textarea { min-height: 9rem; resize: vertical; }
+.rc-input[aria-invalid="true"] { border-color: var(--rc-red); box-shadow: 4px 5px 0 var(--rc-red); }
+.rc-check { display: flex; gap: .7rem; align-items: center; font-family: var(--rc-f-mono); }
+.rc-check input { appearance: none; width: 1.5rem; height: 1.5rem; margin: 0; background: var(--rc-white); border: 2px solid var(--rc-ink); display: grid; place-content: center; cursor: pointer; }
+.rc-check input:checked::before { content: "X"; font-family: var(--rc-f-2); color: var(--rc-red); font-size: 1.3rem; line-height: 1; }
+
+/* 5.9 Sello de goma (estados, "NUEVO", "AGOTADO", precios) */
+.rc-stamp {
+  display: inline-block;
+  padding: .25em .8em;
+  font-family: var(--rc-f-label); font-size: 1.1rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--rc-red);
+  border: 3px double var(--rc-red);
+  border-radius: 6px;
+  transform: rotate(-8deg);
+  mix-blend-mode: multiply;
+  opacity: .88;
+  -webkit-mask-image: var(--rc-grain);  /* tinta irregular */
+          mask-image: var(--rc-grain);
+  -webkit-mask-size: 90px; mask-size: 90px;
+}
+.rc-stamp--blue { color: var(--rc-blue); border-color: var(--rc-blue); }
+
+/* 5.10 Tabla / lista de precios como ticket */
+.rc-ticket {
+  padding: 1.4rem 1.5rem;
+  font-family: var(--rc-f-mono);
+  background: var(--rc-white);
+  box-shadow: var(--rc-lift);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), 97% 100%, 94% calc(100% - 10px), 91% 100%, 88% calc(100% - 10px), 85% 100%, 82% calc(100% - 10px), 79% 100%, 76% calc(100% - 10px), 73% 100%, 70% calc(100% - 10px), 67% 100%, 64% calc(100% - 10px), 61% 100%, 58% calc(100% - 10px), 55% 100%, 52% calc(100% - 10px), 49% 100%, 46% calc(100% - 10px), 43% 100%, 40% calc(100% - 10px), 37% 100%, 34% calc(100% - 10px), 31% 100%, 28% calc(100% - 10px), 25% 100%, 22% calc(100% - 10px), 19% 100%, 16% calc(100% - 10px), 13% 100%, 10% calc(100% - 10px), 7% 100%, 4% calc(100% - 10px), 1% 100%, 0 calc(100% - 10px));
+  padding-bottom: 2.2rem;
+}
+.rc-ticket dl { margin: 0; }
+.rc-ticket .row { display: flex; gap: .5rem; align-items: baseline; }
+.rc-ticket .row::after { content: ""; order: 1; flex: 1; border-bottom: 2px dotted var(--rc-ink-soft); transform: translateY(-.25em); }
+.rc-ticket dt { order: 0; }
+.rc-ticket dd { order: 2; margin: 0; font-weight: 700; }
+
+/* ---------- 6. DECORACIÓN ------------------------------------------------ */
+
+/* 6.1 Cinta transportadora de letras */
+.rc-ticker {
+  overflow: hidden; padding: .7rem 0;
+  background: var(--rc-ink); color: var(--rc-paper);
+  transform: rotate(-1.2deg); margin-inline: -3vw;
+  box-shadow: 0 6px 0 rgba(30, 18, 8, .25);
+}
+.rc-ticker__track { display: flex; gap: 2.5rem; width: max-content; animation: rc-scroll 38s linear infinite; font-family: var(--rc-f-2); font-size: 1.6rem; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+.rc-ticker__track span:nth-child(3n+1) { color: var(--rc-mustard); }
+.rc-ticker__track span:nth-child(3n+2) { color: var(--rc-paper); }
+.rc-ticker__track span:nth-child(3n+3) { color: var(--rc-red); }
+@keyframes rc-scroll { to { transform: translateX(-50%); } }
+
+/* 6.2 Borde rasgado: separador entre secciones */
+.rc-rip-bottom {
+  clip-path: polygon(0 0, 100% 0, 100% 94%, 97% 98%, 94% 93%, 90% 99%, 86% 94%, 83% 98%, 79% 92%, 75% 99%, 71% 94%, 67% 98%, 63% 93%, 59% 99%, 55% 95%, 51% 98%, 47% 92%, 43% 99%, 39% 94%, 35% 98%, 31% 93%, 27% 99%, 23% 94%, 19% 98%, 15% 92%, 11% 99%, 7% 94%, 3% 98%, 0 93%);
+  padding-bottom: 3rem;
+}
+.rc-band { background: var(--rc-surface); }
+.rc-band--ink  { background: var(--rc-ink); color: var(--rc-paper); }
+.rc-band--red  { background: var(--rc-red); color: var(--rc-paper); }
+.rc-band--blue { background: var(--rc-blue); color: var(--rc-white); }
+.rc-band--ink a:where(:not([class])), .rc-band--red a:where(:not([class])), .rc-band--blue a:where(:not([class])) { color: var(--rc-mustard); }
+
+/* 6.3 Cinta suelta decorativa (usar como <span class="rc-tape">) */
+.rc-tape {
+  position: absolute; width: 7rem; height: 1.9rem;
+  background: rgba(242, 182, 50, .6);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+  transform: rotate(var(--rot, -6deg));
+  clip-path: polygon(0 0, 3% 20%, 0 40%, 3% 60%, 0 80%, 3% 100%, 100% 100%, 97% 80%, 100% 60%, 97% 40%, 100% 20%, 97% 0);
+  pointer-events: none;
+}
+
+/* 6.4 Espiral de letras (generada por ransom.js → spiral()) */
+.rc-spiral { position: relative; width: min(100%, 34rem); aspect-ratio: 1; margin-inline: auto; }
+.rc-spiral .rc-l {
+  position: absolute; left: var(--x); top: var(--y);
+  translate: -50% -50%; margin: 0;
+  font-size: calc(var(--fs, 1.6rem) * var(--fa));
+  box-shadow: 1px 2px 3px rgba(30, 18, 8, .3);
+}
+
+/* 6.5 Collage denso de fondo (generado por ransom.js → collage()) */
+.rc-collage { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none;
+  -webkit-mask-image: linear-gradient(#000 60%, transparent); mask-image: linear-gradient(#000 60%, transparent); opacity: var(--rc-collage-opacity, .15); mix-blend-mode: multiply; }
+.rc-collage .rc-l { position: absolute; left: var(--x); top: var(--y); margin: 0; font-size: calc(var(--fs, 4rem) * var(--fa)); }
+.rc-section > .rc-container { position: relative; z-index: 1; }
+
+/* 6.6 Pie de página */
+.rc-footer { padding-block: 3rem 2rem; background: var(--rc-ink); color: var(--rc-paper); font-family: var(--rc-f-label); }
+.rc-footer a:where(:not([class])) { color: var(--rc-mustard); }
+
+/* ---------- 7. TEMAS ----------------------------------------------------- */
+/* Noche: imprenta a oscuras. Los recortes siguen siendo claros y saturados. */
+[data-theme="night"] {
+  --rc-bg: #17120f; --rc-surface: #261e18; --rc-text: #efe5cf; --rc-muted: #bfae92;
+  --rc-accent: var(--rc-mustard); --rc-accent-2: #7fb0ff; --rc-highlight: var(--rc-red);
+  --rc-lift: 1px 2px 0 rgba(0, 0, 0, .5), 4px 8px 16px -6px rgba(0, 0, 0, .9);
+}
+[data-theme="night"] .rc-nav { background: color-mix(in srgb, #261e18 92%, transparent); box-shadow: 0 3px 0 var(--rc-paper), 0 8px 14px -8px #000; }
+[data-theme="night"] .rc-nav__links a { color: var(--rc-ink); }
+[data-theme="night"] .rc-card:not([class*="--"]) { color: var(--rc-text); }
+[data-theme="night"] .rc-btn { box-shadow: 4px 5px 0 var(--rc-paper); }
+[data-theme="night"] .rc-text { filter: drop-shadow(1px 2px 0 rgba(0, 0, 0, .6)) drop-shadow(3px 7px 7px rgba(0, 0, 0, .5)); }
+[data-theme="night"] .rc-collage { mix-blend-mode: screen; --rc-collage-opacity: .12; }
+
+/* Newsprint: más claro y sobrio, para contenido largo (blog, docs, legal) */
+[data-theme="newsprint"] { --rc-bg: #f4ecd8; --rc-surface: #fbf8f0; }
+
+/* ---------- 8. MOVIMIENTO REDUCIDO -------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .rc *, .rc *::before, .rc *::after { transition: none !important; animation: none !important; }
+  .rc-text--live:hover .rc-l { transform: translateY(var(--dy)) rotate(var(--rot)); }
+}
+
+/* Pantallas pequeñas: menos rotación = más legible */
+@media (max-width: 40rem) {
+  .rc { --rk: .7; }
+  .rc-card { transform: rotate(calc(var(--rot) * .6)); }
+  .rc-nav { position: static; }
+}
